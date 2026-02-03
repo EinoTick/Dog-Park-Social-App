@@ -10,6 +10,7 @@ import ParksPage from "./pages/parks/ParksPage";
 import ParkDetailPage from "./pages/parks/ParkDetailPage";
 import VisitsPage from "./pages/visits/VisitsPage";
 import SettingsPage from "./pages/settings/SettingsPage";
+import AdminPage from "./pages/admin/AdminPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
 
 const queryClient = new QueryClient({
@@ -36,6 +37,7 @@ export default function App() {
               <Route path="/parks/:parkId" element={<ParkDetailPage />} />
               <Route path="/visits" element={<VisitsPage />} />
               <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/admin" element={<AdminPage />} />
               <Route path="/admin/users" element={<AdminUsersPage />} />
             </Route>
 
