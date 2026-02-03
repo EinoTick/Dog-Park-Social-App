@@ -25,3 +25,15 @@
   --color-accent: #4d7c0f;
   --color-accent-content: #ffffff;
 }
+
+/* Sidebar viewport height — keeps nav within bounds so logout stays visible */
+.sidebar-viewport {
+  height: 100dvh;
+  max-height: 100dvh;
+}
+@supports not (height: 100dvh) {
+  .sidebar-viewport {
+    height: 100vh;
+    max-height: 100vh;
+  }
+}
