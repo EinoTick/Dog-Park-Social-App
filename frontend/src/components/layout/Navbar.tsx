@@ -25,7 +25,7 @@ export default function Navbar() {
               <ellipse cx="32" cy="36" rx="5" ry="5.5" />
             </svg>
           </div>
-          <span className="text-xl">Dog Park Social</span>
+          <span className="text-xl text-center">Dog Park Social</span>
         </Link>
       </div>
       <nav className="flex-1 px-5 py-3">
