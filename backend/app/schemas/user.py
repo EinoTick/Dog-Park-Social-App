@@ -34,6 +34,22 @@ class UserUpdate(BaseModel):
     email: EmailStr | None = None
 
 
+class AdminUserCreate(UserCreate):
+    """Admin-only: create user with optional is_admin / is_active."""
+
+    is_admin: bool = False
+    is_active: bool = True
+
+
+class AdminUserUpdate(BaseModel):
+    """Admin-only: update any user's profile and flags."""
+
+    full_name: str | None = None
+    email: EmailStr | None = None
+    is_active: bool | None = None
+    is_admin: bool | None = None
+
+
 class PasswordChange(BaseModel):
     current_password: str
     new_password: str
