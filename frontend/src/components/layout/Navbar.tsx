@@ -6,8 +6,8 @@ export default function Navbar() {
 
   const iconClass = "w-5 h-5 shrink-0";
   return (
-    <aside className="w-56 min-h-screen bg-[#124d25] text-[#f0fdf4] font-semibold shadow-sm flex flex-col [&_a]:text-[#f0fdf4] [&_a:hover]:text-white [&_button]:text-[#f0fdf4] [&_button:hover]:text-white">
-      <div className="pt-4 pb-4 px-5 border-b border-white/20">
+    <aside className="w-56 h-screen min-h-0 flex flex-col shrink-0 bg-[#124d25] text-[#f0fdf4] font-semibold shadow-sm [&_a]:text-[#f0fdf4] [&_a:hover]:text-white [&_button]:text-[#f0fdf4] [&_button:hover]:text-white">
+      <div className="shrink-0 pt-4 pb-4 px-5 border-b border-white/20">
         <Link to="/" className="flex flex-col gap-2 w-full">
           <div className="flex justify-center">
             <svg
@@ -28,7 +28,7 @@ export default function Navbar() {
           <span className="text-xl text-center">Dog Park Social</span>
         </Link>
       </div>
-      <nav className="flex-1 px-5 py-3">
+      <nav className="flex-1 min-h-0 overflow-y-auto px-5 py-3">
         <ul className="menu menu-vertical w-full gap-1">
           <li>
             <Link to="/dashboard" className="flex items-center gap-2">
@@ -97,7 +97,7 @@ export default function Navbar() {
           )}
         </ul>
       </nav>
-      <div className="px-5 py-3 border-t border-white/20">
+      <div className="shrink-0 px-5 py-3 border-t border-white/20">
         <button onClick={logout} className="btn btn-ghost w-full justify-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
