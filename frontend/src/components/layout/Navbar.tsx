@@ -17,24 +17,15 @@ export default function Navbar() {
           <li><Link to="/dogs">My Dogs</Link></li>
           <li><Link to="/parks">Parks</Link></li>
           <li><Link to="/visits">My Visits</Link></li>
+          <li><Link to="/settings">Settings</Link></li>
+          {user?.is_admin && <li><Link to="/admin">Admin</Link></li>}
         </ul>
       </nav>
-      {user && (
-        <div className="p-2 border-t border-base-300">
-          <ul className="menu menu-vertical w-full">
-            <li>
-              <details>
-                <summary>{user.username}</summary>
-                <ul className="bg-base-200 rounded-t-none p-2 z-10">
-                  <li><Link to="/settings">Settings</Link></li>
-                  {user.is_admin && <li><Link to="/admin">Admin</Link></li>}
-                  <li><button onClick={logout}>Logout</button></li>
-                </ul>
-              </details>
-            </li>
-          </ul>
-        </div>
-      )}
+      <div className="p-2 border-t border-base-300">
+        <button onClick={logout} className="btn btn-ghost w-full justify-start">
+          Logout
+        </button>
+      </div>
     </aside>
   );
 }
