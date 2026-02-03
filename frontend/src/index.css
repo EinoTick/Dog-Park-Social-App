@@ -1,2 +1,27 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* Dog Park theme — Gemini palette */
+:root {
+  color-scheme: light;
+  /* Background (Clean Air) */
+  --color-base-100: #ffffff;
+  /* Surface (Stone path) — sidebars, cards */
+  --color-base-200: #f5f5f4;
+  /* Borders — green */
+  --color-base-300: #217532;
+  /* Text — green */
+  --color-base-content: #0f7c32;
+  /* Primary (Grass & Leaves) */
+  --color-primary: #0f7c32;
+  --color-primary-content: #ffffff;
+  /* Secondary (Earth & Wood) */
+  --color-secondary: #92400e;
+  --color-secondary-content: #ffffff;
+  /* Neutral */
+  --color-neutral: #1c1917;
+  --color-neutral-content: #f5f5f4;
+  /* Accent — slightly lighter green, fits palette */
+  --color-accent: #4d7c0f;
+  --color-accent-content: #ffffff;
+}
