@@ -18,9 +18,9 @@ export default function AppLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="flex min-h-screen bg-base-100">
       <Navbar />
-      <main className="container mx-auto p-4 max-w-6xl">
+      <main className="flex-1 overflow-auto container mx-auto p-4 max-w-6xl">
         <Outlet />
       </main>
     </div>

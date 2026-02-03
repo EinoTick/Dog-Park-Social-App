@@ -5,19 +5,23 @@ export default function Navbar() {
   const { user, logout } = useAuth();
 
   return (
-    <div className="navbar bg-base-200 shadow-sm">
-      <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl">
+    <aside className="w-56 min-h-screen bg-base-200 shadow-sm flex flex-col">
+      <div className="p-4 border-b border-base-300">
+        <Link to="/" className="btn btn-ghost text-xl w-full justify-start px-2">
           Dog Park Social
         </Link>
       </div>
-      <div className="flex-none">
-        <ul className="menu menu-horizontal px-1 gap-1">
+      <nav className="flex-1 p-2">
+        <ul className="menu menu-vertical w-full gap-1">
           <li><Link to="/dashboard">Dashboard</Link></li>
           <li><Link to="/dogs">My Dogs</Link></li>
           <li><Link to="/parks">Parks</Link></li>
           <li><Link to="/visits">My Visits</Link></li>
-          {user && (
+        </ul>
+      </nav>
+      {user && (
+        <div className="p-2 border-t border-base-300">
+          <ul className="menu menu-vertical w-full">
             <li>
               <details>
                 <summary>{user.username}</summary>
@@ -28,9 +32,9 @@ export default function Navbar() {
                 </ul>
               </details>
             </li>
-          )}
-        </ul>
-      </div>
-    </div>
+          </ul>
+        </div>
+      )}
+    </aside>
   );
 }
