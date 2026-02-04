@@ -125,10 +125,13 @@ export default function VisitsPage() {
                     {visit.notes && <div className="text-sm mt-1">{visit.notes}</div>}
                   </div>
                   <button
-                    className="btn btn-error btn-sm"
+                    type="button"
+                    className="btn btn-ghost btn-sm btn-circle text-base-content/50 hover:text-error hover:bg-base-300"
                     onClick={() => deleteMutation.mutate(visit.id)}
+                    title="Remove visit"
+                    aria-label="Remove visit"
                   >
-                    Delete
+                    <span className="text-xl leading-none pb-1" aria-hidden>×</span>
                   </button>
                 </div>
               </div>
