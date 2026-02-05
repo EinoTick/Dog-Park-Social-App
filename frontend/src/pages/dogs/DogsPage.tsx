@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getMyDogs, createDog, deleteDog } from "../../api/dogs";
 import type { DogCreate, DogSize } from "../../types";
+import type { Dog } from "../../types";
 
 export default function DogsPage() {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
+  const [dogToDelete, setDogToDelete] = useState<Dog | null>(null);
 
   const { data: dogs, isLoading } = useQuery({
     queryKey: ["my-dogs"],
@@ -22,8 +24,35 @@ export default function DogsPage() {
 
   const deleteMutation = useMutation({
     mutationFn: deleteDog,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["my-dogs"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["my-dogs"] });
+      setDogToDelete(null);
+    },
   });
+
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (dogToDelete) {
+      dialogRef.current?.showModal();
+    } else {
+      dialogRef.current?.close();
+    }
+  }, [dogToDelete]);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const handleClose = () => setDogToDelete(null);
+    dialog.addEventListener("close", handleClose);
+    return () => dialog.removeEventListener("close", handleClose);
+  }, []);
+
+  const confirmDelete = () => {
+    if (dogToDelete) deleteMutation.mutate(dogToDelete.id);
+  };
+
+  const closeModal = () => setDogToDelete(null);
 
   const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,17 +102,24 @@ export default function DogsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {dogs.map((dog) => (
             <div key={dog.id} className="card bg-base-200 shadow">
-              <div className="card-body">
-                <h2 className="card-title">{dog.name}</h2>
-                <p className="text-sm text-base-content/60">{dog.breed} &middot; {dog.size}</p>
-                <div className="badge badge-sm">{dog.good_with_others ? "Friendly" : "Needs space"}</div>
-                {dog.personality_notes && <p className="text-sm mt-1">{dog.personality_notes}</p>}
-                <div className="card-actions justify-end mt-2">
+              <div className="card-body py-3">
+                <div className="flex justify-between items-start gap-2">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="card-title mb-0 text-lg">{dog.name}</h2>
+                      <span className="badge badge-sm">{dog.good_with_others ? "Friendly" : "Needs space"}</span>
+                    </div>
+                    <p className="text-sm text-base-content/60">{dog.breed} &middot; {dog.size}</p>
+                    {dog.personality_notes && <p className="text-sm mt-1">{dog.personality_notes}</p>}
+                  </div>
                   <button
-                    className="btn btn-error btn-sm"
-                    onClick={() => deleteMutation.mutate(dog.id)}
+                    type="button"
+                    className="btn btn-ghost btn-sm btn-circle text-base-content/50 hover:text-error hover:bg-base-300 shrink-0"
+                    onClick={() => setDogToDelete(dog)}
+                    title="Remove dog"
+                    aria-label="Remove dog"
                   >
-                    Delete
+                    <span className="text-xl leading-none pb-1" aria-hidden>×</span>
                   </button>
                 </div>
               </div>
@@ -93,6 +129,31 @@ export default function DogsPage() {
       ) : (
         <p className="text-base-content/60">No dogs yet. Add your first dog above!</p>
       )}
+
+      <dialog ref={dialogRef} className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Remove dog?</h3>
+          <p className="py-2">
+            Are you sure you want to remove <strong>{dogToDelete?.name}</strong>? This cannot be undone.
+          </p>
+          <div className="modal-action">
+            <button type="button" className="btn btn-ghost" onClick={closeModal}>
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="btn btn-error"
+              onClick={confirmDelete}
+              disabled={deleteMutation.isPending}
+            >
+              {deleteMutation.isPending ? <span className="loading loading-spinner loading-sm" /> : "Delete"}
+            </button>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button type="submit">close</button>
+        </form>
+      </dialog>
     </div>
   );
 }
