@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 type NavbarProps = {
@@ -29,7 +29,9 @@ export default function Navbar({ isOpen = true, onOpen, onClose }: NavbarProps) 
   const iconClass = "w-5 h-5 shrink-0";
   const linkProps = { onClick: onClose };
   const textVisible = isOpen;
-  const linkClassName = `flex items-center gap-2 ${textVisible ? "max-md:justify-start max-md:gap-2" : "max-md:justify-center max-md:gap-0"} md:justify-start md:gap-2`;
+  const navLinkBase = `flex items-center gap-2 py-2 px-3 rounded-lg ${textVisible ? "max-md:justify-start max-md:gap-2" : "max-md:justify-center max-md:gap-0"} md:justify-start md:gap-2`;
+  const navLinkClassName = ({ isActive }: { isActive: boolean }) =>
+    `${navLinkBase} ${isActive ? "!text-white bg-white/25" : "text-[#f0fdf4] hover:!text-white hover:bg-white/10"}`;
 
   return (
     <>
@@ -43,7 +45,7 @@ export default function Navbar({ isOpen = true, onOpen, onClose }: NavbarProps) 
       <aside
         className={`
           sidebar-viewport grid grid-rows-[auto_1fr_auto] min-h-0 shrink-0 overflow-hidden bg-[#124d25] text-[#f0fdf4] font-semibold shadow-sm
-          [&_a]:text-[#f0fdf4] [&_a:hover]:text-white [&_button]:text-[#f0fdf4] [&_button:hover]:text-white
+          [&_button]:text-[#f0fdf4] [&_button:hover]:text-white
           md:relative inset-y-0 left-0 z-50 md:z-auto
           md:w-56 transition-[width] duration-200 ease-out
           ${isOpen ? "max-md:w-56" : ""}
@@ -86,9 +88,9 @@ export default function Navbar({ isOpen = true, onOpen, onClose }: NavbarProps) 
         </div>
       </div>
       <nav className={`min-h-0 overflow-y-auto overflow-x-hidden py-3 px-3 md:px-5 ${isOpen ? "max-md:px-5" : ""}`}>
-        <ul className="menu menu-vertical w-full gap-1">
+        <ul className="menu menu-vertical w-full gap-1 p-0 [&>li]:list-none">
           <li>
-            <Link to="/dashboard" className={linkClassName} {...linkProps}>
+            <NavLink to="/dashboard" end className={navLinkClassName} {...linkProps}>
               <svg xmlns="http://www.w3.org/2000/svg" className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <rect width="7" height="9" x="3" y="3" rx="1" />
                 <rect width="7" height="5" x="14" y="3" rx="1" />
@@ -96,10 +98,10 @@ export default function Navbar({ isOpen = true, onOpen, onClose }: NavbarProps) 
                 <rect width="7" height="5" x="3" y="16" rx="1" />
               </svg>
               <span className={`hidden md:inline ${textVisible ? "max-md:inline" : ""}`}>Dashboard</span>
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/dogs" className={linkClassName} {...linkProps}>
+            <NavLink to="/dogs" end className={navLinkClassName} {...linkProps}>
               <svg xmlns="http://www.w3.org/2000/svg" className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M10 5.172C10 3.782 8.423 2.679 6.5 3c-1.823.47-2.703 2.12-2 4 .22.72.626 1.2 1 1.5" />
                 <path d="M12 12v.01" />
@@ -111,19 +113,19 @@ export default function Navbar({ isOpen = true, onOpen, onClose }: NavbarProps) 
                 <path d="M9.5 8.5c1 1 2 1 3 0" />
               </svg>
               <span className={`hidden md:inline ${textVisible ? "max-md:inline" : ""}`}>My Dogs</span>
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/parks" className={linkClassName} {...linkProps}>
+            <NavLink to="/parks" end className={navLinkClassName} {...linkProps}>
               <svg xmlns="http://www.w3.org/2000/svg" className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
               <span className={`hidden md:inline ${textVisible ? "max-md:inline" : ""}`}>Parks</span>
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/visits" className={linkClassName} {...linkProps}>
+            <NavLink to="/visits" end className={navLinkClassName} {...linkProps}>
               <svg xmlns="http://www.w3.org/2000/svg" className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
                 <line x1="16" x2="16" y1="2" y2="6" />
@@ -131,29 +133,29 @@ export default function Navbar({ isOpen = true, onOpen, onClose }: NavbarProps) 
                 <line x1="3" x2="21" y1="10" y2="10" />
               </svg>
               <span className={`hidden md:inline ${textVisible ? "max-md:inline" : ""}`}>My Visits</span>
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/settings" className={linkClassName} {...linkProps}>
+            <NavLink to="/settings" end className={navLinkClassName} {...linkProps}>
               <svg xmlns="http://www.w3.org/2000/svg" className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
                 <circle cx="12" cy="12" r="3" />
               </svg>
               <span className={`hidden md:inline ${textVisible ? "max-md:inline" : ""}`}>Settings</span>
-            </Link>
+            </NavLink>
           </li>
           {user?.is_admin && (
             <>
               <li>
-                <Link to="/admin" className={linkClassName} {...linkProps}>
+                <NavLink to="/admin" end className={navLinkClassName} {...linkProps}>
                   <svg xmlns="http://www.w3.org/2000/svg" className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                   </svg>
                   <span className={`hidden md:inline ${textVisible ? "max-md:inline" : ""}`}>Admin</span>
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link to="/admin/users" className={linkClassName} {...linkProps}>
+                <NavLink to="/admin/users" end className={navLinkClassName} {...linkProps}>
                   <svg xmlns="http://www.w3.org/2000/svg" className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                     <circle cx="9" cy="7" r="4" />
@@ -161,7 +163,7 @@ export default function Navbar({ isOpen = true, onOpen, onClose }: NavbarProps) 
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
                   <span className={`hidden md:inline ${textVisible ? "max-md:inline" : ""}`}>Users</span>
-                </Link>
+                </NavLink>
               </li>
             </>
           )}
