@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { login } from "../../api/auth";
 import { getMe } from "../../api/users";
 import type { LoginCredentials } from "../../types";
+import twoDogsCartoon from "../../assets/two_dogs_cartoon.jpg";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -25,9 +26,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-base-200">
-      <div className="card w-full max-w-md bg-base-100 shadow-xl">
-        <div className="card-body">
+    <div className="flex flex-col-reverse md:flex-row min-h-screen bg-base-200 md:bg-transparent">
+      <div className="card w-full max-w-[21rem] md:min-h-screen rounded-none bg-base-200 md:bg-base-100 shadow-none md:shadow-xl border-0 md:border border-base-300/20 flex flex-col shrink-0 flex-1 md:flex-initial min-h-0 mx-auto md:mx-0">
+        <div className="card-body flex-1 flex flex-col justify-center">
           <h2 className="card-title text-2xl justify-center">Dog Park Social</h2>
           <p className="text-center text-base-content/60">Sign in to your account</p>
 
@@ -67,6 +68,12 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
+      <div
+        className="flex-1 min-h-[35vh] md:min-h-screen bg-cover bg-center shrink-0"
+        style={{ backgroundImage: `url(${twoDogsCartoon})` }}
+        role="img"
+        aria-label="Decorative illustration of dogs"
+      />
     </div>
   );
 }
