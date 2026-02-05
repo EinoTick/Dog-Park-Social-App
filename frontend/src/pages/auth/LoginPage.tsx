@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { login } from "../../api/auth";
+import { getMe } from "../../api/users";
 import type { LoginCredentials } from "../../types";
 
 export default function LoginPage() {
@@ -15,7 +16,8 @@ export default function LoginPage() {
     try {
       setError("");
       await login(data);
-      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      // Fetch current user into cache before navigating so AuthContext has user immediately
+      await queryClient.fetchQuery({ queryKey: ["me"], queryFn: getMe });
       navigate("/dashboard");
     } catch {
       setError("Invalid username or password");
