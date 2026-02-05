@@ -17,7 +17,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Welcome, {user?.full_name || user?.username}</h1>
+      <h1 className="text-3xl font-bold text-primary">Welcome, {user?.full_name || user?.username}</h1>
 
       {/* Stats cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

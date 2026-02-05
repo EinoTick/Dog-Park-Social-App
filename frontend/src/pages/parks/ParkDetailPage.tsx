@@ -22,7 +22,7 @@ export default function ParkDetailPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">{park.name}</h1>
+        <h1 className="text-3xl font-bold text-primary">{park.name}</h1>
         <p className="text-base-content/60">{park.address}</p>
         {park.description && <p className="mt-2">{park.description}</p>}
       </div>

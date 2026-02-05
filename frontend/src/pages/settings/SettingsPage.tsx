@@ -37,7 +37,7 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-8 max-w-lg">
-      <h1 className="text-3xl font-bold">Settings</h1>
+      <h1 className="text-3xl font-bold text-primary">Settings</h1>
 
       {/* Profile */}
       <form onSubmit={handleProfile((d) => profileMutation.mutate(d))} className="space-y-3">

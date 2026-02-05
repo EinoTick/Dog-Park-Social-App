@@ -10,8 +10,8 @@
   --color-base-200: #f5f5f4;
   /* Borders — green */
   --color-base-300: #217532;
-  /* Text — green */
-  --color-base-content: #0f7c32;
+  /* Text — black */
+  --color-base-content: #000000;
   /* Primary (Grass & Leaves) */
   --color-primary: #0f7c32;
   --color-primary-content: #ffffff;
@@ -24,6 +24,14 @@
   /* Accent — slightly lighter green, fits palette */
   --color-accent: #4d7c0f;
   --color-accent-content: #ffffff;
+}
+
+/* Primary-styled links use black text to match body text (not green) */
+.link.link-primary {
+  color: var(--color-base-content);
+}
+.link.link-primary:hover {
+  color: var(--color-neutral);
 }
 
 /* Sidebar viewport height — keeps nav within bounds so logout stays visible */

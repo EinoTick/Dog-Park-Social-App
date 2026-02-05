@@ -53,7 +53,7 @@ export default function VisitsPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">My Visits</h1>
+        <h1 className="text-3xl font-bold text-primary">My Visits</h1>
         <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
           {showForm ? "Cancel" : "Log a Visit"}
         </button>

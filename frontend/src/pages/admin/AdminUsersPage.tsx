@@ -82,7 +82,7 @@ export default function AdminUsersPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Users</h1>
+        <h1 className="text-3xl font-bold text-primary">Users</h1>
         <button className="btn btn-primary" onClick={() => setShowCreate(!showCreate)}>
           {showCreate ? "Cancel" : "Add User"}
         </button>

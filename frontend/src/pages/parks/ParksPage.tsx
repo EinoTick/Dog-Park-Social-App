@@ -37,7 +37,7 @@ export default function ParksPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Dog Parks</h1>
+        <h1 className="text-3xl font-bold text-primary">Dog Parks</h1>
         <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
           {showForm ? "Cancel" : "Add Park"}
         </button>
