@@ -149,13 +149,13 @@ def upcoming_activity(
     current_user: User = Depends(get_current_user),
     session: Session = Depends(get_session),
 ):
-    """Visits happening now or within the next 24 hours (for the dashboard)."""
+    """Next 10 upcoming visits (for the dashboard), ordered by start time."""
     now = datetime.now(timezone.utc)
-    cutoff = now + timedelta(hours=24)
     visits = session.exec(
         select(Visit)
-        .where(Visit.end_time >= now, Visit.start_time <= cutoff)
+        .where(Visit.end_time >= now)
         .order_by(Visit.start_time)
+        .limit(10)
     ).all()
     return [_enrich_visit(v, session) for v in visits]
 

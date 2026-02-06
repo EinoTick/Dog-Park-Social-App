@@ -35,15 +35,15 @@ export default function DashboardPage() {
           </div>
         </div>
         <div className="stat bg-base-200 rounded-box shadow">
-          <div className="stat-title">Activity Next 24h</div>
+          <div className="stat-title">Next 10 Visits</div>
           <div className="stat-value">{upcoming?.length ?? "..."}</div>
-          <div className="stat-desc">visits at parks near you</div>
+          <div className="stat-desc">upcoming at parks</div>
         </div>
       </div>
 
       {/* Upcoming activity list */}
       <div>
-        <h2 className="text-xl font-semibold mb-3">Upcoming Activity</h2>
+        <h2 className="text-xl font-semibold mb-3">Next 10 Visits</h2>
         {upcoming && upcoming.length > 0 ? (
           <div className="space-y-3">
             {upcoming.map((visit) => (
@@ -71,7 +71,7 @@ export default function DashboardPage() {
             ))}
           </div>
         ) : (
-          <p className="text-base-content/60">No upcoming activity in the next 24 hours.</p>
+          <p className="text-base-content/60">No upcoming visits.</p>
         )}
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../contexts/AuthContext";
@@ -43,8 +43,29 @@ export default function AdminUsersPage() {
 
   const deleteMutation = useMutation({
     mutationFn: deleteUser,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-users"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+      setEditingUser(null);
+    },
   });
+
+  const editDialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (editingUser) {
+      editDialogRef.current?.showModal();
+    } else {
+      editDialogRef.current?.close();
+    }
+  }, [editingUser]);
+
+  useEffect(() => {
+    const dialog = editDialogRef.current;
+    if (!dialog) return;
+    const handleClose = () => setEditingUser(null);
+    dialog.addEventListener("close", handleClose);
+    return () => dialog.removeEventListener("close", handleClose);
+  }, []);
 
   if (user && !user.is_admin) {
     return <Navigate to="/dashboard" replace />;
@@ -126,55 +147,6 @@ export default function AdminUsersPage() {
         </form>
       )}
 
-      {editingUser && (
-        <form
-          onSubmit={handleUpdate}
-          className="card bg-base-200 shadow p-4 space-y-3"
-        >
-          <h2 className="font-semibold text-lg">Edit user: {editingUser.username}</h2>
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            className="input input-bordered w-full"
-            defaultValue={editingUser.email}
-            required
-          />
-          <input
-            name="full_name"
-            placeholder="Full name"
-            className="input input-bordered w-full"
-            defaultValue={editingUser.full_name ?? ""}
-          />
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              name="is_active"
-              className="checkbox"
-              defaultChecked={editingUser.is_active}
-            />
-            <span>Active</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              name="is_admin"
-              className="checkbox"
-              defaultChecked={editingUser.is_admin}
-            />
-            <span>Admin</span>
-          </label>
-          <div className="flex gap-2">
-            <button type="submit" className="btn btn-primary" disabled={updateMutation.isPending}>
-              {updateMutation.isPending ? <span className="loading loading-spinner loading-sm" /> : "Save"}
-            </button>
-            <button type="button" className="btn btn-ghost" onClick={() => setEditingUser(null)}>
-              Cancel
-            </button>
-          </div>
-        </form>
-      )}
-
       {users && users.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table table-zebra">
@@ -186,12 +158,15 @@ export default function AdminUsersPage() {
                 <th>Active</th>
                 <th>Admin</th>
                 <th>Created</th>
-                <th className="text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
               {users.map((u) => (
-                <tr key={u.id}>
+                <tr
+                  key={u.id}
+                  className="cursor-pointer hover:bg-base-300/30"
+                  onClick={() => setEditingUser(u)}
+                >
                   <td className="font-medium">{u.username}</td>
                   <td>{u.email}</td>
                   <td>{u.full_name ?? "—"}</td>
@@ -199,27 +174,6 @@ export default function AdminUsersPage() {
                   <td>{u.is_admin ? "Yes" : "No"}</td>
                   <td className="text-base-content/70 text-sm">
                     {new Date(u.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="text-right">
-                    <button
-                      type="button"
-                      className="btn btn-ghost btn-sm"
-                      onClick={() => setEditingUser(u)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-error btn-sm"
-                      onClick={() => {
-                        if (window.confirm(`Deactivate user "${u.username}"? They will not be able to log in.`)) {
-                          deleteMutation.mutate(u.id);
-                        }
-                      }}
-                      disabled={deleteMutation.isPending || !u.is_active}
-                    >
-                      Deactivate
-                    </button>
                   </td>
                 </tr>
               ))}
@@ -229,6 +183,86 @@ export default function AdminUsersPage() {
       ) : (
         <p className="text-base-content/60">No users found.</p>
       )}
+
+      <dialog ref={editDialogRef} className="modal">
+        {editingUser && (
+          <>
+            <div className="modal-box">
+              <h3 className="font-bold text-lg">Edit user: {editingUser.username}</h3>
+              <form id="edit-user-form" onSubmit={handleUpdate} className="space-y-3 mt-4">
+                <div className="form-control">
+                  <label className="label"><span className="label-text">Email</span></label>
+                  <input
+                    name="email"
+                    type="email"
+                    className="input input-bordered w-full"
+                    defaultValue={editingUser.email}
+                    required
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label"><span className="label-text">Full name</span></label>
+                  <input
+                    name="full_name"
+                    className="input input-bordered w-full"
+                    defaultValue={editingUser.full_name ?? ""}
+                  />
+                </div>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="is_active"
+                    className="checkbox"
+                    defaultChecked={editingUser.is_active}
+                  />
+                  <span>Active</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="is_admin"
+                    className="checkbox"
+                    defaultChecked={editingUser.is_admin}
+                  />
+                  <span>Admin</span>
+                </label>
+              </form>
+              <div className="modal-action flex-wrap gap-2 justify-between mt-6">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    className="btn btn-error"
+                    onClick={() => {
+                      if (window.confirm(`Delete user "${editingUser.username}"? This cannot be undone.`)) {
+                        deleteMutation.mutate(editingUser.id);
+                      }
+                    }}
+                    disabled={deleteMutation.isPending}
+                  >
+                    {deleteMutation.isPending ? <span className="loading loading-spinner loading-sm" /> : "Delete"}
+                  </button>
+                </div>
+                <div className="flex gap-2">
+                  <button type="button" className="btn btn-ghost" onClick={() => setEditingUser(null)}>
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    form="edit-user-form"
+                    className="btn btn-primary"
+                    disabled={updateMutation.isPending}
+                  >
+                    {updateMutation.isPending ? <span className="loading loading-spinner loading-sm" /> : "Save"}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <form method="dialog" className="modal-backdrop">
+              <button type="submit" onClick={() => setEditingUser(null)}>close</button>
+            </form>
+          </>
+        )}
+      </dialog>
     </div>
   );
 }
